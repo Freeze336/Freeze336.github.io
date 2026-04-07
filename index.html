@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArtVault Studio — Équipement & Revenus pour Créatifs</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+--black: #060608;
+--dark: #0D0D14;
+--card: #11111C;
+--card2: #16162A;
+--cyan: #00F0FF;
+--cyan-dim: rgba(0,240,255,.15);
+--gold: #FFB800;
+--gold-dim: rgba(255,184,0,.15);
+--crimson: #FF2D55;
+--violet: #BF5FFF;
+--green: #00FF94;
+--white: #F0EEF8;
+--muted: #6B6880;
+--border: rgba(255,255,255,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+font-family:'Syne',sans-serif;
+background:var(--black);
+color:var(--white);
+overflow-x:hidden;
+cursor:none;
+}
+/* CUSTOM CURSOR */
+#cursor{
+position:fixed;width:12px;height:12px;
+background:var(--cyan);border-radius:50%;
+pointer-events:none;z-index:9999;
+transform:translate(-50%,-50%);
+transition:transform .1s,width .2s,height .2s,background .2s;
+mix-blend-mode:difference;
+}
+#cursor-trail{
+position:fixed;width:40px;height:40px;
+border:1px solid rgba(0,240,255,.4);
+border-radius:50%;pointer-events:none;z-index:9998;
+transform:translate(-50%,-50%);
+transition:left .12s ease,top .12s ease;
+}
+body:has(a:hover) #cursor,body:has(button:hover) #cursor{
+width:24px;height:24px;background:var(--gold);
+}
+/* NOISE OVERLAY */
+body::before{
+content:'';position:fixed;inset:0;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+opacity:.4;pointer-events:none;z-index:1;
+}
+/* TICKER */
+.ticker-wrap{
+background:var(--cyan);color:var(--black);
+padding:10px 0;overflow:hidden;
+font-family:'Bebas Neue';font-size:1rem;letter-spacing:.12em;
+}
+.ticker{
+display:flex;gap:60px;
+animation:ticker 22s linear infinite;
+white-space:nowrap;
+}
+.ticker-item{display:flex;align-items:center;gap:16px;}
+.ticker-dot{width:6px;height:6px;background:var(--black);border-radius:50%;}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* NAV */
+nav{
+position:fixed;top:0;width:100%;z-index:100;
+padding:20px 64px;
+display:flex;align-items:center;justify-content:space-between;
+background:rgba(6,6,8,.85);
+backdrop-filter:blur(20px);
+border-bottom:1px solid var(--border);
+transition:padding .3s;
+}
+.nav-logo{
+font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:.08em;
+background:linear-gradient(90deg,var(--cyan),var(--violet));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+text-decoration:none;
+}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+color:var(--muted);text-decoration:none;transition:color .3s;
+position:relative;
+}
+.nav-links a::after{
+content:'';position:absolute;left:0;bottom:-4px;
+width:0;height:1px;background:var(--cyan);
+transition:width .3s;
+}
+.nav-links a:hover{color:var(--white);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+background:var(--cyan);color:var(--black);
+padding:10px 28px;border-radius:0;
+font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+text-decoration:none;
+clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+transition:background .3s,transform .2s;
+}
+.nav-cta:hover{background:var(--gold);transform:translateY(-2px);}
+/* HERO */
+#hero{
+min-height:100vh;position:relative;
+display:grid;grid-template-columns:1fr 1fr;gap:0;
+padding-top:80px;overflow:hidden;
+}
+.hero-left{
+padding:100px 64px 80px;
+display:flex;flex-direction:column;justify-content:center;
+position:relative;z-index:2;
+}
+.hero-right{
+position:relative;display:flex;align-items:center;justify-content:center;
+overflow:hidden;
+}
+.hero-bg-grid{
+position:absolute;inset:0;
+background-image:
+linear-gradient(rgba(0,240,255,.04) 1px,transparent 1px),
+linear-gradient(90deg,rgba(0,240,255,.04) 1px,transparent 1px);
+background-size:48px 48px;
+}
+.hero-glow{
+position:absolute;
+width:600px;height:600px;
+background:radial-gradient(circle,rgba(0,240,255,.08) 0%,transparent 70%);
+top:50%;left:50%;transform:translate(-50%,-50%);
+pointer-events:none;
+}
+.live-badge{
+display:inline-flex;align-items:center;gap:8px;
+background:rgba(0,255,148,.1);border:1px solid rgba(0,255,148,.25);
+padding:6px 16px;margin-bottom:28px;
+font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+color:var(--green);
+}
+.live-dot{
+width:8px;height:8px;border-radius:50%;background:var(--green);
+animation:pulse-green 1.5s ease infinite;
+}
+@keyframes pulse-green{
+0%,100%{box-shadow:0 0 0 0 rgba(0,255,148,.5);}
+50%{box-shadow:0 0 0 8px rgba(0,255,148,0);}
+}
+.hero-tag{
+font-family:'Syne Mono';font-size:.72rem;color:var(--cyan);
+letter-spacing:.1em;margin-bottom:16px;
+display:flex;align-items:center;gap:10px;
+}
+.hero-tag::before{content:'//';opacity:.5;}
+.hero-title{
+font-family:'Bebas Neue';
+font-size:clamp(4rem,7vw,7rem);line-height:.95;letter-spacing:.02em;
+margin-bottom:24px;
+}
+.hero-title .line1{display:block;color:var(--white);}
+.hero-title .line2{
+display:block;
+background:linear-gradient(90deg,var(--cyan),var(--violet));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-title .line3{display:block;color:var(--gold);}
+.hero-sub{
+font-size:.95rem;font-weight:400;line-height:1.75;
+color:var(--muted);max-width:440px;margin-bottom:44px;
+}
+.hero-sub strong{color:var(--white);font-weight:700;}
+.hero-btns{display:flex;gap:16px;align-items:center;margin-bottom:56px;}
+.btn-main{
+background:var(--cyan);color:var(--black);
+padding:16px 40px;
+font-size:.78rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+text-decoration:none;border:none;cursor:none;
+clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+transition:all .3s;position:relative;overflow:hidden;
+}
+.btn-main::before{
+content:'';position:absolute;inset:0;
+background:var(--gold);transform:translateX(-100%);transition:transform .3s;
+}
+.btn-main:hover::before{transform:translateX(0);}
+.btn-main span{position:relative;z-index:1;}
+.btn-outline{
+border:1px solid rgba(255,255,255,.2);color:var(--white);
+padding:16px 40px;
+font-size:.78rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+text-decoration:none;transition:all .3s;
+}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);}
+.hero-kpis{
+display:grid;grid-template-columns:repeat(3,1fr);
+border:1px solid var(--border);
+background:rgba(255,255,255,.02);
+}
+.kpi{
+padding:20px 24px;
+border-right:1px solid var(--border);
+}
+.kpi:last-child{border-right:none;}
+.kpi-num{
+font-family:'Bebas Neue';font-size:2.2rem;line-height:1;
+background:linear-gradient(135deg,var(--cyan),var(--violet));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.kpi-label{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;}
+/* HERO PRODUCT VISUAL */
+.product-3d{
+position:relative;z-index:2;
+width:85%;
+transition:transform .1s;
+}
+.screen-wrap{
+width:100%;padding-top:68%;position:relative;
+background:linear-gradient(135deg,#0D1525,#1A2840);
+border-radius:12px;
+border:2px solid rgba(0,240,255,.2);
+box-shadow:
+0 0 0 1px rgba(0,240,255,.08),
+0 40px 80px rgba(0,0,0,.6),
+inset 0 0 60px rgba(0,240,255,.04),
+0 0 120px rgba(0,240,255,.06);
+overflow:hidden;
+}
+.screen-face{
+position:absolute;inset:0;
+display:flex;align-items:center;justify-content:center;
+overflow:hidden;
+}
+#heroCanvas{width:100%;height:100%;display:block;}
+.screen-bezel{
+position:absolute;inset:0;
+border-radius:12px;
+box-shadow:inset 0 0 30px rgba(0,0,0,.4);
+pointer-events:none;
+}
+.stand-base{
+width:28%;margin:0 auto;
+height:10px;
+background:linear-gradient(to right,#1A1A2E,#2A2A4A,#1A1A2E);
+border-radius:0 0 8px 8px;
+}
+.pen-3d{
+position:absolute;right:-24px;bottom:20%;
+width:16px;height:260px;
+background:linear-gradient(to bottom,#1A1A2E 0%,#FFB800 30%,#BF5FFF 60%,#1A1A2E 100%);
+border-radius:6px 6px 20px 20px;
+box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 20px rgba(191,95,255,.2);
+transform:rotate(-8deg);
+}
+.pen-nib{
+position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+width:3px;height:16px;
+background:linear-gradient(to bottom,var(--cyan),#999);
+border-radius:0 0 2px 2px;
+}
+.floating-chip{
+position:absolute;
+background:var(--card2);border:1px solid var(--border);
+padding:10px 16px;border-radius:4px;
+font-size:.72rem;font-weight:700;letter-spacing:.08em;
+backdrop-filter:blur(8px);
+animation:float 3s ease-in-out infinite;
+}
+.chip-1{top:15%;left:-60px;border-color:rgba(0,240,255,.3);color:var(--cyan);animation-delay:0s;}
+.chip-2{top:40%;right:-70px;border-color:rgba(255,184,0,.3);color:var(--gold);animation-delay:1s;}
+.chip-3{bottom:20%;left:-50px;border-color:rgba(191,95,255,.3);color:var(--violet);animation-delay:2s;}
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+}
+/* MARQUEE SECTION */
+.marquee-section{
+padding:28px 0;
+background:var(--card);
+border-top:1px solid var(--border);
+border-bottom:1px solid var(--border);
+overflow:hidden;
+}
+.marquee-track{
+display:flex;gap:80px;align-items:center;
+animation:marquee 30s linear infinite;
+white-space:nowrap;
+}
+.marquee-item{
+font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:.1em;
+color:var(--muted);display:flex;align-items:center;gap:24px;
+flex-shrink:0;
+}
+.marquee-item span{color:var(--cyan);}
+.marquee-dash{width:40px;height:1px;background:var(--muted);}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* PRODUCT SECTION */
+#product{
+padding:120px 64px;
+background:var(--dark);
+position:relative;overflow:hidden;
+}
+#product::before{
+content:'WACOM';
+position:absolute;right:-40px;top:50%;transform:translateY(-50%) rotate(90deg);
+font-family:'Bebas Neue';font-size:12rem;color:rgba(255,255,255,.02);
+letter-spacing:-.02em;pointer-events:none;
+white-space:nowrap;
+}
+.section-label{
+font-family:'Syne Mono';font-size:.72rem;color:var(--cyan);
+letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;
+display:flex;align-items:center;gap:12px;
+}
+.section-label::before{content:'[ ';color:var(--muted);}
+.section-label::after{content:' ]';color:var(--muted);}
+.section-h2{
+font-family:'Bebas Neue';
+font-size:clamp(3rem,5vw,5rem);line-height:1;letter-spacing:.02em;
+margin-bottom:80px;
+}
+.product-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:60px;align-items:start;}
+.product-card{
+position:sticky;top:100px;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:2px;overflow:hidden;
+}
+.product-image-area{
+padding:48px;
+background:linear-gradient(135deg,#0D1220,#1A2035);
+position:relative;
+display:flex;align-items:center;justify-content:center;
+min-height:320px;
+}
+.product-tag-new{
+position:absolute;top:0;left:0;
+background:var(--crimson);color:var(--white);
+padding:6px 20px;
+font-size:.65rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+}
+.product-screen-demo{
+width:90%;position:relative;
+}
+.demo-screen{
+width:100%;padding-top:64%;
+background:linear-gradient(135deg,#080F1C,#0D1A2C);
+border-radius:8px;
+border:1.5px solid rgba(0,240,255,.25);
+box-shadow:0 0 40px rgba(0,240,255,.08),0 20px 60px rgba(0,0,0,.5);
+position:relative;overflow:hidden;
+}
+#productCanvas{
+position:absolute;inset:0;width:100%;height:100%;
+}
+.demo-stand{
+width:25%;margin:0 auto;height:8px;
+background:linear-gradient(to right,#0D1220,#1A2035,#0D1220);
+border-radius:0 0 6px 6px;
+}
+.product-body{padding:32px;}
+.product-eyebrow{
+font-family:'Syne Mono';font-size:.68rem;color:var(--muted);
+letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;
+}
+.product-name{
+font-family:'Bebas Neue';font-size:2rem;letter-spacing:.04em;
+line-height:1;margin-bottom:4px;
+}
+.product-edition{
+font-size:.78rem;color:var(--cyan);font-weight:600;
+letter-spacing:.08em;margin-bottom:20px;
+}
+.rating-row{
+display:flex;align-items:center;gap:12px;margin-bottom:24px;
+}
+.stars{color:var(--gold);font-size:.9rem;letter-spacing:2px;}
+.rating-text{font-size:.75rem;color:var(--muted);}
+.price-block{
+background:rgba(0,240,255,.05);
+border:1px solid rgba(0,240,255,.15);
+padding:16px 20px;margin-bottom:24px;
+display:flex;align-items:center;justify-content:space-between;
+}
+.price-label{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.price-value{
+font-family:'Bebas Neue';font-size:1.6rem;color:var(--cyan);letter-spacing:.04em;
+}
+.btn-amazon{
+display:block;width:100%;text-align:center;
+background:var(--gold);color:var(--black);
+padding:16px;
+font-size:.78rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+text-decoration:none;border:none;cursor:none;
+transition:all .3s;position:relative;overflow:hidden;
+}
+.btn-amazon::after{
+content:'COMMANDER MAINTENANT';
+position:absolute;inset:0;
+background:var(--crimson);color:var(--white);
+display:flex;align-items:center;justify-content:center;
+font-size:.78rem;font-weight:800;letter-spacing:.15em;
+transform:translateY(100%);transition:transform .3s;
+}
+.btn-amazon:hover::after{transform:translateY(0);}
+/* Spec accordion */
+.specs-right{display:flex;flex-direction:column;gap:0;}
+.spec-group{
+border-bottom:1px solid var(--border);
+overflow:hidden;
+}
+.spec-header{
+padding:20px 0;
+display:flex;align-items:center;justify-content:space-between;
+cursor:none;
+}
+.spec-header-left{display:flex;align-items:center;gap:16px;}
+.spec-num{
+font-family:'Bebas Neue';font-size:2.5rem;color:rgba(255,255,255,.06);
+line-height:1;min-width:48px;
+}
+.spec-title{font-size:.9rem;font-weight:700;letter-spacing:.05em;}
+.spec-subtitle{font-size:.75rem;color:var(--muted);margin-top:2px;}
+.spec-arrow{
+color:var(--muted);font-size:1.2rem;
+transition:transform .3s,color .3s;
+flex-shrink:0;
+}
+.spec-group.open .spec-arrow{transform:rotate(45deg);color:var(--cyan);}
+.spec-body{
+max-height:0;overflow:hidden;
+transition:max-height .4s ease;
+}
+.spec-group.open .spec-body{max-height:400px;}
+.spec-rows{
+padding:0 0 24px 64px;
+display:flex;flex-direction:column;gap:0;
+}
+.spec-row{
+display:flex;justify-content:space-between;align-items:baseline;
+padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);
+font-size:.83rem;
+}
+.spec-row:last-child{border-bottom:none;}
+.spec-k{color:var(--muted);}
+.spec-v{font-weight:700;color:var(--white);}
+.spec-v.cyan{color:var(--cyan);}
+.spec-v.gold{color:var(--gold);}
+/* Feature grid */
+.feature-grid{
+display:grid;grid-template-columns:repeat(2,1fr);gap:2px;
+margin-top:2px;background:var(--border);
+}
+.feat{
+background:var(--card);padding:28px 24px;
+transition:background .3s;
+position:relative;overflow:hidden;
+}
+.feat::before{
+content:'';position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(0,240,255,.06),transparent);
+opacity:0;transition:opacity .3s;
+}
+.feat:hover{background:var(--card2);}
+.feat:hover::before{opacity:1;}
+.feat-bar{
+width:32px;height:3px;margin-bottom:16px;
+background:var(--cyan);
+}
+.feat:nth-child(2) .feat-bar{background:var(--violet);}
+.feat:nth-child(3) .feat-bar{background:var(--gold);}
+.feat:nth-child(4) .feat-bar{background:var(--crimson);}
+.feat-title{font-size:.85rem;font-weight:800;letter-spacing:.04em;margin-bottom:8px;}
+.feat-desc{font-size:.78rem;color:var(--muted);line-height:1.65;}
+/* OPPORTUNITIES */
+#opportunities{
+padding:120px 64px;
+background:var(--black);
+position:relative;
+}
+.opp-header{margin-bottom:80px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;}
+.opp-header-right{
+display:flex;flex-direction:column;gap:16px;
+align-items:flex-end;
+}
+.live-counter{
+background:var(--card);border:1px solid rgba(0,255,148,.2);
+padding:16px 24px;display:flex;align-items:center;gap:16px;
+}
+.live-counter-dot{
+width:10px;height:10px;border-radius:50%;background:var(--green);
+animation:pulse-green 1.5s infinite;flex-shrink:0;
+}
+.live-counter-text{font-size:.78rem;color:var(--muted);}
+.live-counter-num{
+font-family:'Bebas Neue';font-size:1.8rem;color:var(--green);letter-spacing:.04em;
+}
+.opp-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:2px;
+background:rgba(255,255,255,.03);
+}
+.opp-card{
+background:var(--card);
+padding:36px 28px;
+position:relative;overflow:hidden;
+cursor:none;
+transition:background .3s,transform .4s;
+border-top:3px solid transparent;
+}
+.opp-card::after{
+content:'';position:absolute;
+bottom:0;left:0;right:0;height:0;
+transition:height .4s;
+}
+.opp-card:hover{background:var(--card2);transform:translateY(-4px);}
+.opp-card.c1{border-top-color:var(--cyan);}
+.opp-card.c2{border-top-color:var(--violet);}
+.opp-card.c3{border-top-color:var(--gold);}
+.opp-card.c4{border-top-color:var(--crimson);}
+.opp-card.c5{border-top-color:var(--green);}
+.opp-card.c1::after{background:linear-gradient(to top,rgba(0,240,255,.04),transparent);}
+.opp-card.c2::after{background:linear-gradient(to top,rgba(191,95,255,.04),transparent);}
+.opp-card.c3::after{background:linear-gradient(to top,rgba(255,184,0,.04),transparent);}
+.opp-card.c4::after{background:linear-gradient(to top,rgba(255,45,85,.04),transparent);}
+.opp-card.c5::after{background:linear-gradient(to top,rgba(0,255,148,.04),transparent);}
+.opp-card:hover::after{height:100%;}
+.opp-ribbon{
+position:absolute;top:0;right:0;
+padding:4px 14px;
+font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+}
+.opp-ribbon.hot{background:var(--crimson);color:var(--white);}
+.opp-ribbon.new{background:var(--cyan);color:var(--black);}
+.opp-service{
+font-family:'Syne Mono';font-size:.65rem;color:var(--muted);
+letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;
+}
+.opp-earn-block{margin-bottom:20px;}
+.opp-amount{
+font-family:'Bebas Neue';font-size:3.5rem;line-height:1;
+letter-spacing:.02em;
+}
+.c1 .opp-amount{color:var(--cyan);}
+.c2 .opp-amount{color:var(--violet);}
+.c3 .opp-amount{color:var(--gold);}
+.c4 .opp-amount{color:var(--crimson);}
+.c5 .opp-amount{color:var(--green);}
+.opp-per{font-size:.75rem;color:var(--muted);margin-top:2px;font-weight:600;}
+.opp-title{
+font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:.05em;
+margin-bottom:12px;
+}
+.opp-desc{font-size:.79rem;color:var(--muted);line-height:1.7;margin-bottom:24px;}
+.opp-trial{
+display:flex;align-items:center;gap:8px;
+font-size:.7rem;font-weight:700;letter-spacing:.08em;
+padding:8px 14px;
+background:rgba(255,255,255,.04);border:1px solid var(--border);
+margin-bottom:20px;
+}
+.opp-trial-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.c1 .opp-trial-dot{background:var(--cyan);}
+.c2 .opp-trial-dot{background:var(--violet);}
+.c3 .opp-trial-dot{background:var(--gold);}
+.c4 .opp-trial-dot{background:var(--crimson);}
+.c5 .opp-trial-dot{background:var(--green);}
+.btn-claim{
+display:block;width:100%;text-align:center;
+padding:13px;
+font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+text-decoration:none;border:none;cursor:none;
+transition:all .3s;
+}
+.c1 .btn-claim{background:rgba(0,240,255,.1);color:var(--cyan);border:1px solid rgba(0,240,255,.3);}
+.c1 .btn-claim:hover{background:var(--cyan);color:var(--black);}
+.c2 .btn-claim{background:rgba(191,95,255,.1);color:var(--violet);border:1px solid rgba(191,95,255,.3);}
+.c2 .btn-claim:hover{background:var(--violet);color:var(--white);}
+.c3 .btn-claim{background:rgba(255,184,0,.1);color:var(--gold);border:1px solid rgba(255,184,0,.3);}
+.c3 .btn-claim:hover{background:var(--gold);color:var(--black);}
+.c4 .btn-claim{background:rgba(255,45,85,.1);color:var(--crimson);border:1px solid rgba(255,45,85,.3);}
+.c4 .btn-claim:hover{background:var(--crimson);color:var(--white);}
+.c5 .btn-claim{background:rgba(0,255,148,.1);color:var(--green);border:1px solid rgba(0,255,148,.3);}
+.c5 .btn-claim:hover{background:var(--green);color:var(--black);}
+/* GAME SECTION */
+#game{
+padding:120px 64px;
+background:var(--card);
+position:relative;overflow:hidden;
+}
+.game-bg{
+position:absolute;inset:0;
+background:
+radial-gradient(ellipse 60% 80% at 50% 50%,rgba(191,95,255,.06) 0%,transparent 70%);
+}
+.game-header{text-align:center;margin-bottom:64px;}
+.game-subtitle{
+font-size:1rem;color:var(--muted);max-width:500px;margin:20px auto 0;line-height:1.7;
+}
+.game-subtitle strong{color:var(--white);}
+.game-container{
+max-width:760px;margin:0 auto;
+display:flex;flex-direction:column;align-items:center;gap:40px;
+}
+/* WHEEL */
+.wheel-wrap{
+position:relative;
+width:480px;height:480px;
+flex-shrink:0;
+}
+.wheel-pointer{
+position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+width:0;height:0;
+border-left:16px solid transparent;
+border-right:16px solid transparent;
+border-top:32px solid var(--gold);
+filter:drop-shadow(0 4px 12px rgba(255,184,0,.5));
+z-index:10;
+}
+#wheelCanvas{
+width:480px;height:480px;
+border-radius:50%;
+box-shadow:0 0 0 6px rgba(255,255,255,.06),0 0 80px rgba(191,95,255,.2);
+display:block;
+}
+.wheel-center{
+position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+width:64px;height:64px;border-radius:50%;
+background:var(--dark);border:3px solid rgba(255,255,255,.15);
+display:flex;align-items:center;justify-content:center;
+z-index:5;
+box-shadow:0 0 0 1px rgba(255,255,255,.05);
+}
+.wheel-center-inner{
+width:20px;height:20px;border-radius:50%;
+background:linear-gradient(135deg,var(--cyan),var(--violet));
+}
+.game-controls{
+display:flex;flex-direction:column;align-items:center;gap:24px;
+width:100%;
+}
+.btn-spin{
+padding:18px 60px;
+font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:.12em;
+background:linear-gradient(135deg,var(--violet),var(--cyan));
+color:var(--white);border:none;cursor:none;
+clip-path:polygon(16px 0%,100% 0%,calc(100% - 16px) 100%,0% 100%);
+transition:all .3s;
+box-shadow:0 8px 40px rgba(191,95,255,.35);
+}
+.btn-spin:hover:not(:disabled){
+transform:translateY(-3px);
+box-shadow:0 14px 50px rgba(191,95,255,.5);
+}
+.btn-spin:disabled{opacity:.5;cursor:default;}
+.game-result{
+width:100%;
+background:var(--dark);border:1px solid var(--border);
+padding:32px;
+text-align:center;
+min-height:120px;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+position:relative;overflow:hidden;
+}
+.result-idle{font-size:.85rem;color:var(--muted);letter-spacing:.08em;}
+.result-content{display:none;flex-direction:column;align-items:center;gap:12px;}
+.result-content.show{display:flex;}
+.result-label{
+font-family:'Syne Mono';font-size:.68rem;color:var(--green);
+letter-spacing:.15em;text-transform:uppercase;
+}
+.result-service{
+font-family:'Bebas Neue';font-size:2rem;letter-spacing:.06em;
+}
+.result-earn{
+font-size:.85rem;color:var(--muted);
+}
+.result-earn strong{font-size:1.1rem;}
+.btn-result-claim{
+margin-top:8px;
+padding:12px 32px;
+font-size:.75rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+background:var(--gold);color:var(--black);
+text-decoration:none;border:none;cursor:none;
+transition:all .3s;
+animation:pulse-gold .8s ease infinite;
+}
+@keyframes pulse-gold{
+0%,100%{box-shadow:0 0 0 0 rgba(255,184,0,.4);}
+50%{box-shadow:0 0 0 12px rgba(255,184,0,0);}
+}
+.spins-left{
+font-family:'Syne Mono';font-size:.72rem;color:var(--muted);
+letter-spacing:.1em;
+}
+.spins-left span{color:var(--cyan);}
+/* HOW IT WORKS */
+#how{
+padding:120px 64px;
+background:var(--dark);
+}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{
+display:flex;gap:24px;padding:36px 0;
+border-bottom:1px solid var(--border);
+transition:background .3s;
+}
+.step:last-child{border-bottom:none;}
+.step-num-wrap{flex-shrink:0;position:relative;}
+.step-num{
+font-family:'Bebas Neue';font-size:4rem;color:rgba(255,255,255,.04);
+line-height:1;
+transition:color .3s;
+}
+.step:hover .step-num{color:rgba(0,240,255,.15);}
+.step-content{padding-top:8px;}
+.step-title{
+font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:.05em;
+margin-bottom:10px;
+}
+.step-desc{font-size:.82rem;color:var(--muted);line-height:1.75;}
+.step-pill{
+display:inline-block;margin-top:12px;
+padding:4px 14px;
+background:rgba(0,240,255,.08);border:1px solid rgba(0,240,255,.2);
+font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+color:var(--cyan);
+}
+.earnings-sim{
+background:var(--card);border:1px solid var(--border);
+overflow:hidden;position:sticky;top:100px;
+}
+.sim-header{
+padding:24px 28px;border-bottom:1px solid var(--border);
+background:rgba(255,255,255,.02);
+}
+.sim-title{
+font-family:'Bebas Neue';font-size:1.3rem;letter-spacing:.08em;
+}
+.sim-subtitle{font-size:.75rem;color:var(--muted);margin-top:4px;}
+.sim-body{padding:28px;}
+.sim-row{
+display:flex;align-items:center;justify-content:space-between;
+padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04);
+}
+.sim-row:last-of-type{border-bottom:none;}
+.sim-service{font-size:.82rem;font-weight:600;}
+.sim-controls{display:flex;align-items:center;gap:12px;}
+.sim-input{
+width:64px;background:rgba(255,255,255,.05);border:1px solid var(--border);
+color:var(--white);padding:6px 8px;text-align:center;
+font-family:'Syne';font-size:.8rem;font-weight:700;
+}
+.sim-unit{font-size:.72rem;color:var(--muted);}
+.sim-earn{
+font-family:'Bebas Neue';font-size:1.1rem;color:var(--cyan);
+min-width:56px;text-align:right;
+}
+.sim-total{
+margin-top:20px;padding:20px;
+background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.15);
+display:flex;justify-content:space-between;align-items:center;
+}
+.sim-total-label{font-size:.75rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;}
+.sim-total-num{
+font-family:'Bebas Neue';font-size:2.2rem;color:var(--cyan);letter-spacing:.04em;
+}
+/* FOOTER */
+footer{
+padding:60px 64px;
+border-top:1px solid var(--border);
+background:var(--dark);
+display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;align-items:start;
+}
+.footer-brand-name{
+font-family:'Bebas Neue';font-size:1.6rem;
+background:linear-gradient(90deg,var(--cyan),var(--violet));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+margin-bottom:12px;
+}
+.footer-copy{font-size:.76rem;color:var(--muted);line-height:1.7;}
+.footer-col-title{
+font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;
+color:var(--muted);margin-bottom:16px;
+}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-links a{font-size:.8rem;color:var(--muted);text-decoration:none;transition:color .3s;}
+.footer-links a:hover{color:var(--cyan);}
+.footer-bottom{
+grid-column:1/-1;padding-top:28px;
+border-top:1px solid var(--border);
+display:flex;justify-content:space-between;align-items:center;
+}
+.footer-legal{font-size:.7rem;color:var(--muted);line-height:1.6;}
+/* SCROLL REVEAL */
+.sr{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease;}
+.sr.visible{opacity:1;transform:translateY(0);}
+.sr-d1{transition-delay:.1s;}
+.sr-d2{transition-delay:.2s;}
+.sr-d3{transition-delay:.3s;}
+.sr-d4{transition-delay:.4s;}
+.sr-d5{transition-delay:.5s;}
+/* HIGHLIGHT BAR */
+.sticky-bar{
+position:fixed;bottom:0;left:0;right:0;z-index:99;
+background:var(--card);border-top:1px solid rgba(0,240,255,.2);
+padding:14px 64px;
+display:flex;align-items:center;justify-content:space-between;
+transform:translateY(100%);transition:transform .4s;
+}
+.sticky-bar.show{transform:translateY(0);}
+.sticky-bar-text{font-size:.82rem;color:var(--muted);}
+.sticky-bar-text strong{color:var(--white);}
+.sticky-bar-right{display:flex;align-items:center;gap:20px;}
+.sticky-close{
+background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:none;
+padding:4px 8px;transition:color .3s;
+}
+.sticky-close:hover{color:var(--white);}
+@media(max-width:960px){
+nav{padding:16px 24px;}
+.nav-links{display:none;}
+#hero{grid-template-columns:1fr;padding-top:80px;}
+.hero-left{padding:80px 24px 40px;}
+.hero-right{min-height:300px;padding:24px;}
+.hero-kpis{grid-template-columns:repeat(3,1fr);}
+#product{padding:80px 24px;}
+.product-layout{grid-template-columns:1fr;}
+.product-card{position:static;}
+#opportunities{padding:80px 24px;}
+.opp-header{grid-template-columns:1fr;}
+.opp-grid{grid-template-columns:1fr;}
+#game{padding:80px 24px;}
+.wheel-wrap{width:320px;height:320px;}
+#wheelCanvas{width:320px;height:320px;}
+#how{padding:80px 24px;}
+.how-grid{grid-template-columns:1fr;}
+footer{padding:40px 24px;grid-template-columns:1fr;}
+.sticky-bar{padding:12px 24px;}
+}
+</style>
+</head>
+<body>
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-trail"></div>
+<!-- TICKER -->
+<div class="ticker-wrap" style="margin-top:0;position:fixed;bottom:0;z-index:97;display:none" id="tickerBar">
+<div class="ticker">
+<div class="ticker-item"><div class="ticker-dot"></div>WACOM CINTIQ 24 — EDITION 2025<div class="ticker-dot"></div>JUSQU'A 15€ PAR REFERRAL<div class="ticker-dot"></div>LIVRAISON EXPRESS DISPONIBLE<div class="ticker-dot"></div>OFFRE EXCLUSIVE PARTENAIRE<div class="ticker-dot"></div>PRO PEN 3 — 8192 NIVEAUX<div class="ticker-dot"></div>REJOINS 4 200+ CREATEURS</div>
+<div class="ticker-item"><div class="ticker-dot"></div>WACOM CINTIQ 24 — EDITION 2025<div class="ticker-dot"></div>JUSQU'A 15€ PAR REFERRAL<div class="ticker-dot"></div>LIVRAISON EXPRESS DISPONIBLE<div class="ticker-dot"></div>OFFRE EXCLUSIVE PARTENAIRE<div class="ticker-dot"></div>PRO PEN 3 — 8192 NIVEAUX<div class="ticker-dot"></div>REJOINS 4 200+ CREATEURS</div>
+</div>
+</div>
+<!-- NAV -->
+<nav id="mainNav">
+<a href="#" class="nav-logo">ArtVault<span style="color:var(--white);">Studio</span></a>
+<ul class="nav-links">
+<li><a href="#product">Le Produit</a></li>
+<li><a href="#opportunities">Revenus</a></li>
+<li><a href="#game">La Roue</a></li>
+<li><a href="#how">Comment ca marche</a></li>
+</ul>
+<a href="#opportunities" class="nav-cta">Commencer a gagner</a>
+</nav>
+<!-- HERO -->
+<section id="hero">
+<div class="hero-bg-grid"></div>
+<div class="hero-left">
+<div class="live-badge">
+<div class="live-dot"></div>
+<span id="liveCount">4 217</span> createurs actifs ce soir
+</div>
+<div class="hero-tag">Plateforme exclusive / Edition 2025</div>
+<h1 class="hero-title">
+<span class="line1">Cree.</span>
+<span class="line2">Partage.</span>
+<span class="line3">Encaisse.</span>
+</h1>
+<p class="hero-sub">
+La <strong>Wacom Cintiq 24</strong> — la tablette que tous les professionnels s'arrachent —
+combinee aux meilleures opportunites de revenus passifs disponibles aujourd'hui.
+Un seul ecosysteme. Des resultats immediats.
+</p>
+<div class="hero-btns">
+<a href="#product" class="btn-main"><span>Decouvrir la tablette</span></a>
+<a href="#game" class="btn-outline">Jouer et gagner</a>
+</div>
+<div class="hero-kpis">
+<div class="kpi">
+<div class="kpi-num" data-count="8192" data-suffix="">0</div>
+<div class="kpi-label">Niveaux de pression</div>
+</div>
+<div class="kpi" style="border-right:1px solid var(--border)">
+<div class="kpi-num" data-count="15" data-prefix="" data-suffix="€ max">0€</div>
+<div class="kpi-label">Commission par offre</div>
+</div>
+<div class="kpi">
+<div class="kpi-num" data-count="9" data-suffix=" offres">0</div>
+<div class="kpi-label">Opportunites actives</div>
+</div>
+</div>
+</div>
+<div class="hero-right">
+<div class="hero-glow"></div>
+<div class="product-3d" id="product3d">
+<div class="floating-chip chip-1">8192 NIVEAUX</div>
+<div class="floating-chip chip-2">2.5K — WQHD</div>
+<div class="floating-chip chip-3">PRO PEN 3</div>
+<div class="screen-wrap">
+<div class="screen-face">
+<canvas id="heroCanvas"></canvas>
+</div>
+<div class="screen-bezel"></div>
+</div>
+<div class="stand-base"></div>
+<div class="pen-3d"><div class="pen-nib"></div></div>
+</div>
+</div>
+</section>
+<!-- MARQUEE -->
+<div class="marquee-section">
+<div class="marquee-track" id="marquee">
+<div class="marquee-item">WACOM CINTIQ 24 <span>2025</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">PRO PEN 3 <span>SANS BATTERIE</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">ECRAN <span>2.5K IPS</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">SUPPORT <span>16°–69°</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">REVENUS <span>JUSQU'A 15€</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">PROGRAMME <span>PARTENAIRE</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">WACOM CINTIQ 24 <span>2025</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">PRO PEN 3 <span>SANS BATTERIE</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">ECRAN <span>2.5K IPS</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">SUPPORT <span>16°–69°</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">REVENUS <span>JUSQU'A 15€</span><div class="marquee-dash"></div></div>
+<div class="marquee-item">PROGRAMME <span>PARTENAIRE</span><div class="marquee-dash"></div></div>
+</div>
+</div>
+<!-- PRODUCT -->
+<section id="product">
+<div class="section-label">Produit Vedette</div>
+<h2 class="section-h2">Wacom Cintiq 24 —<br><span style="color:var(--cyan)">L'arme secrete</span><br>des artistes pro</h2>
+<div class="product-layout">
+<div class="product-card sr">
+<div class="product-image-area">
+<div class="product-tag-new">EDITION 2025</div>
+<div class="product-screen-demo">
+<div class="demo-screen">
+<canvas id="productCanvas"></canvas>
+</div>
+<div class="demo-stand"></div>
+</div>
+</div>
+<div class="product-body">
+<div class="product-eyebrow">Wacom — Pro Series</div>
+<div class="product-name">WACOM CINTIQ 24</div>
+<div class="product-edition">Edition 2025 — Disponible maintenant</div>
+<div class="rating-row">
+<div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="rating-text">91% d'avis positifs · 200+ clients</div>
+</div>
+<div class="price-block">
+<div><div class="price-label">Prix via lien exclusif</div></div>
+<div class="price-value">MEILLEUR PRIX</div>
+</div>
+<a href="#LIEN_AFFILIÉ_WACOM" class="btn-amazon" target="_blank" rel="noopener">
+Commander sur Amazon
+</a>
+<p style="font-size:.7rem;color:var(--muted);text-align:center;margin-top:12px;letter-spacing:.06em">
+LIVRAISON RAPIDE · RETOURS GRATUITS · GARANTIE OFFICIELLE
+</p>
+</div>
+</div>
+<div class="specs-right">
+<div class="spec-group open sr sr-d1" onclick="toggleSpec(this)">
+<div class="spec-header">
+<div class="spec-header-left">
+<div class="spec-num">01</div>
+<div><div class="spec-title">Ecran & Affichage</div><div class="spec-subtitle">Precision visuelle de niveau studio</div></div>
+</div>
+<div class="spec-arrow">+</div>
+</div>
+<div class="spec-body">
+<div class="spec-rows">
+<div class="spec-row"><span class="spec-k">Taille</span><span class="spec-v cyan">23,8" — 60,4 cm</span></div>
+<div class="spec-row"><span class="spec-k">Resolution</span><span class="spec-v cyan">2560 x 1440 (2.5K WQHD)</span></div>
+<div class="spec-row"><span class="spec-k">Panneau</span><span class="spec-v">IPS — Tous angles</span></div>
+<div class="spec-row"><span class="spec-k">Verre</span><span class="spec-v">Anti-reflets, colle optiquement</span></div>
+<div class="spec-row"><span class="spec-k">Parallaxe</span><span class="spec-v">Quasi nulle</span></div>
+<div class="spec-row"><span class="spec-k">Support</span><span class="spec-v gold">16° a 69° reglable</span></div>
+</div>
+</div>
+</div>
+<div class="spec-group sr sr-d2" onclick="toggleSpec(this)">
+<div class="spec-header">
+<div class="spec-header-left">
+<div class="spec-num">02</div>
+<div><div class="spec-title">Pro Pen 3 — Stylet de legende</div><div class="spec-subtitle">40 ans d'innovation concentres dans un stylet</div></div>
+</div>
+<div class="spec-arrow">+</div>
+</div>
+<div class="spec-body">
+<div class="spec-rows">
+<div class="spec-row"><span class="spec-k">Pression</span><span class="spec-v cyan">8 192 niveaux</span></div>
+<div class="spec-row"><span class="spec-k">Inclinaison</span><span class="spec-v">±60 degres</span></div>
+<div class="spec-row"><span class="spec-k">Resolution</span><span class="spec-v">5 080 LPI</span></div>
+<div class="spec-row"><span class="spec-k">Reponse</span><span class="spec-v cyan">240 RPS</span></div>
+<div class="spec-row"><span class="spec-k">Lecture</span><span class="spec-v">10 mm de hauteur</span></div>
+<div class="spec-row"><span class="spec-k">Batterie</span><span class="spec-v gold">Aucune — jamais</span></div>
+</div>
+</div>
+</div>
+<div class="spec-group sr sr-d3" onclick="toggleSpec(this)">
+<div class="spec-header">
+<div class="spec-header-left">
+<div class="spec-num">03</div>
+<div><div class="spec-title">Connectivite & Compatibilite</div><div class="spec-subtitle">S'integre a tous vos workflows</div></div>
+</div>
+<div class="spec-arrow">+</div>
+</div>
+<div class="spec-body">
+<div class="spec-rows">
+<div class="spec-row"><span class="spec-k">Ports</span><span class="spec-v">USB-C, HDMI, USB-A</span></div>
+<div class="spec-row"><span class="spec-k">Windows</span><span class="spec-v cyan">10 et superieur</span></div>
+<div class="spec-row"><span class="spec-k">macOS</span><span class="spec-v cyan">13 et superieur</span></div>
+<div class="spec-row"><span class="spec-k">Android</span><span class="spec-v cyan">8.0 et superieur</span></div>
+<div class="spec-row"><span class="spec-k">VESA</span><span class="spec-v">75 x 75 mm</span></div>
+</div>
+</div>
+</div>
+<div class="spec-group sr sr-d4" onclick="toggleSpec(this)">
+<div class="spec-header">
+<div class="spec-header-left">
+<div class="spec-num">04</div>
+<div><div class="spec-title">Contenu & Accessoires</div><div class="spec-subtitle">Tout inclus pour creer des jour 1</div></div>
+</div>
+<div class="spec-arrow">+</div>
+</div>
+<div class="spec-body">
+<div class="spec-rows">
+<div class="spec-row"><span class="spec-k">Stylet</span><span class="spec-v gold">Pro Pen 3</span></div>
+<div class="spec-row"><span class="spec-k">Pointes</span><span class="spec-v">Standard + Feutre + Extracteur</span></div>
+<div class="spec-row"><span class="spec-k">Support</span><span class="spec-v">Inclinable integre</span></div>
+<div class="spec-row"><span class="spec-k">Porte-stylo</span><span class="spec-v">Inclus</span></div>
+<div class="spec-row"><span class="spec-k">Cable</span><span class="spec-v">USB-C vers C (1,8 m)</span></div>
+</div>
+</div>
+</div>
+<div class="feature-grid sr sr-d5">
+<div class="feat">
+<div class="feat-bar"></div>
+<div class="feat-title">Couleurs d'une fidelite absolue</div>
+<div class="feat-desc">Degrades riches, ombrages subtils, reproduction exacte de ta palette — chaque teinte est restituee avec une precision de studio professionnel.</div>
+</div>
+<div class="feat">
+<div class="feat-bar"></div>
+<div class="feat-title">Silence total, performance maximale</div>
+<div class="feat-desc">Design sans ventilateur — zero bruit de fond, surface fraiche meme apres 8h de session intensive. Concentre-toi uniquement sur ton art.</div>
+</div>
+<div class="feat">
+<div class="feat-bar"></div>
+<div class="feat-title">Ambidextre et ergonomique</div>
+<div class="feat-desc">Pensee pour droitiers comme gauchers. Le support reglable de 16 a 69 degres t'offre la position parfaite pour chaque type de creation.</div>
+</div>
+<div class="feat">
+<div class="feat-bar"></div>
+<div class="feat-title">Touch papier sur ecran numerique</div>
+<div class="feat-desc">Le verre grave anti-reflets reproduit la friction naturelle du papier. Chaque trait a la meme inertie que sur carnet — la transition est immaterielle.</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- OPPORTUNITIES -->
+<section id="opportunities">
+<div class="opp-header">
+<div>
+<div class="section-label">Programme de revenus</div>
+<h2 class="section-h2" style="margin-bottom:0">Des commissions<br><span style="color:var(--violet)">qui s'accumulent</span><br>pendant ton sommeil</h2>
+</div>
+<div class="opp-header-right">
+<div class="live-counter">
+<div class="live-counter-dot"></div>
+<div>
+<div class="live-counter-num" id="earningNow">247</div>
+<div class="live-counter-text">personnes en train de gagner en ce moment</div>
+</div>
+</div>
+<p style="font-size:.78rem;color:var(--muted);max-width:300px;text-align:right;line-height:1.6">
+Partage un lien, quelqu'un s'inscrit, tu touches ta commission. Immediatement tracable. Transparent.
+</p>
+</div>
+</div>
+<div class="opp-grid">
+<!-- Prime -->
+<div class="opp-card c1 sr">
+<div class="opp-ribbon hot">Populaire</div>
+<div class="opp-service">Amazon</div>
+<div class="opp-earn-block">
+<div class="opp-amount">3€</div>
+<div class="opp-per">par inscription via ton lien</div>
+</div>
+<div class="opp-title">AMAZON PRIME</div>
+<div class="opp-desc">L'abonnement le plus partage en France. Propose l'essai gratuit de 30 jours et empoche 3€ des que quelqu'un s'inscrit via ton lien. Aucune friction, conversion record.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>ESSAI GRATUIT 30 JOURS A PROMOUVOIR</div>
+<a href="#LIEN_PRIME" class="btn-claim" target="_blank" rel="noopener">Activer cette offre</a>
+</div>
+<!-- Prime Video -->
+<div class="opp-card c2 sr sr-d1">
+<div class="opp-ribbon hot">Top conversion</div>
+<div class="opp-service">Streaming</div>
+<div class="opp-earn-block">
+<div class="opp-amount">3€</div>
+<div class="opp-per">par essai gratuit genere</div>
+</div>
+<div class="opp-title">PRIME VIDEO</div>
+<div class="opp-desc">Films, series originales, documentaires exclusifs. La communaute creative est deja abonnee — aide les autres a decouvrir le service et gagne a chaque activation.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>ESSAI 30 JOURS SANS ENGAGEMENT</div>
+<a href="#LIEN_PRIME_VIDEO" class="btn-claim" target="_blank" rel="noopener">Activer cette offre</a>
+</div>
+<!-- Audible -->
+<div class="opp-card c3 sr sr-d2">
+<div class="opp-ribbon new">15€ max</div>
+<div class="opp-service">Audio</div>
+<div class="opp-earn-block">
+<div class="opp-amount">15€</div>
+<div class="opp-per">par abonnement Audible genere</div>
+</div>
+<div class="opp-title">AUDIBLE</div>
+<div class="opp-desc">La commission la plus elevee du programme. 15€ par abonnement Audible signe via ton lien — une seule souscription par session de travail et ta journee est rentabilisee.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>MEILLEURE COMMISSION DU PROGRAMME</div>
+<a href="#LIEN_AUDIBLE" class="btn-claim" target="_blank" rel="noopener">Activer cette offre</a>
+</div>
+<!-- Music -->
+<div class="opp-card c4 sr">
+<div class="opp-service">Musique</div>
+<div class="opp-earn-block">
+<div class="opp-amount">6€</div>
+<div class="opp-per">par abonnement Music Unlimited</div>
+</div>
+<div class="opp-title">AMAZON MUSIC</div>
+<div class="opp-desc">Streaming haute qualite — HD et Ultra HD. 6€ fixes par inscription. Ideal pour les communautes de musiciens, beatmakers et artistes visuels qui creent sur fond musical.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>6€ FIXES — SANS VARIABLE</div>
+<a href="#LIEN_MUSIC" class="btn-claim" target="_blank" rel="noopener">Activer cette offre</a>
+</div>
+<!-- Channels -->
+<div class="opp-card c5 sr sr-d1">
+<div class="opp-service">Chaines premium</div>
+<div class="opp-earn-block">
+<div class="opp-amount">3€</div>
+<div class="opp-per">par essai channels active</div>
+</div>
+<div class="opp-title">PRIME VIDEO CHANNELS</div>
+<div class="opp-desc">OCS, MGM, Filmo TV, TFOU Max, BFI Player, Action Max — chaque chaine est une opportunite. 3€ par essai gratuit active. Multiplie les liens, multiplie les revenus.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>OCS · MGM · FILMO TV · TFOU MAX</div>
+<a href="#LIEN_CHANNELS" class="btn-claim" target="_blank" rel="noopener">Activer cette offre</a>
+</div>
+<!-- Prime Student -->
+<div class="opp-card c1 sr sr-d2">
+<div class="opp-service">Etudiants</div>
+<div class="opp-earn-block">
+<div class="opp-amount">3€</div>
+<div class="opp-per">par etudiant parraine</div>
+</div>
+<div class="opp-title">PRIME STUDENT</div>
+<div class="opp-desc">Essai 90 jours pour les etudiants — le plus long du marche. 3€ par filleul actif. Si tu es dans une ecole d'art, une universite ou une academie numerique, ce canal est une mine.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>ESSAI 90 JOURS — CONVERTI FACILEMENT</div>
+<a href="#LIEN_STUDENT" class="btn-claim" target="_blank" rel="noopener">Activer cette offre</a>
+</div>
+<!-- Kindle -->
+<div class="opp-card c2 sr">
+<div class="opp-service">Lecture numerique</div>
+<div class="opp-earn-block">
+<div class="opp-amount">KENP</div>
+<div class="opp-per">revenu par page effectivement lue</div>
+</div>
+<div class="opp-title">KINDLE UNLIMITED</div>
+<div class="opp-desc">Inscris tes e-books dans KDP Select. Le fonds mondial mensuel depasse plusieurs millions de dollars. Chaque page lue par un abonne te genere une remuneration passive recurrente.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>REVENUS PASSIFS — LONG TERME</div>
+<a href="#LIEN_KINDLE" class="btn-claim" target="_blank" rel="noopener">En savoir plus</a>
+</div>
+<!-- Mariage -->
+<div class="opp-card c3 sr sr-d1">
+<div class="opp-service">Evenement</div>
+<div class="opp-earn-block">
+<div class="opp-amount">CB</div>
+<div class="opp-per">cashback sur les cadeaux recus</div>
+</div>
+<div class="opp-title">LISTE DE MARIAGE</div>
+<div class="opp-desc">Transforme ta liste de mariage en avantage financier reel. Millions de produits disponibles. Cashback direct sur les achats de tes invites. Partage facile par lien personnel.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>CASHBACK AUTOMATIQUE</div>
+<a href="#LIEN_MARIAGE" class="btn-claim" target="_blank" rel="noopener">Creer ma liste</a>
+</div>
+<!-- Naissance -->
+<div class="opp-card c4 sr sr-d2">
+<div class="opp-service">Naissance</div>
+<div class="opp-earn-block">
+<div class="opp-amount">CB+</div>
+<div class="opp-per">cashback et avantages nouveau-ne</div>
+</div>
+<div class="opp-title">LISTE DE NAISSANCE</div>
+<div class="opp-desc">Remises exclusives nouveaux parents, cashback sur les articles non achetes et acces a une selection premium de produits bebe. L'une des listes les plus completes disponibles.</div>
+<div class="opp-trial"><div class="opp-trial-dot"></div>REDUCTIONS EXCLUSIVES PARENTS</div>
+<a href="#LIEN_NAISSANCE" class="btn-claim" target="_blank" rel="noopener">Creer ma liste</a>
+</div>
+</div>
+</section>
+<!-- GAME SECTION -->
+<section id="game">
+<div class="game-bg"></div>
+<div class="game-header sr">
+<div class="section-label" style="justify-content:center">Mini-jeu exclusif</div>
+<h2 class="section-h2" style="margin-bottom:0">La <span style="color:var(--violet)">Roue</span> des Opportunites</h2>
+<p class="game-subtitle">
+Tourne la roue pour decouvrir <strong>quelle offre te correspond le mieux</strong>.
+Chaque segment cache une commission reelle — et chaque tour est une occasion de gagner.
+</p>
+</div>
+<div class="game-container">
+<div class="wheel-wrap sr">
+<div class="wheel-pointer"></div>
+<canvas id="wheelCanvas" width="480" height="480"></canvas>
+<div class="wheel-center">
+<div class="wheel-center-inner"></div>
+</div>
+</div>
+<div class="game-controls sr sr-d1">
+<div class="game-result" id="gameResult">
+<div class="result-idle" id="resultIdle">Tourne la roue et decouvre ton offre</div>
+<div class="result-content" id="resultContent">
+<div class="result-label">Ton offre personnalisee</div>
+<div class="result-service" id="resultService"></div>
+<div class="result-earn" id="resultEarn"></div>
+<a href="#" class="btn-result-claim" id="resultCta" target="_blank" rel="noopener">Activer cette offre maintenant</a>
+</div>
+</div>
+<button class="btn-spin" id="spinBtn" onclick="spinWheel()">TOURNER LA ROUE</button>
+<div class="spins-left">Tours restants : <span id="spinsLeft">3</span></div>
+</div>
+</div>
+</section>
+<!-- HOW IT WORKS -->
+<section id="how">
+<div class="how-grid">
+<div>
+<div class="section-label">Methode simple</div>
+<h2 class="section-h2" style="margin-bottom:48px">Trois actions.<br><span style="color:var(--cyan)">Des revenus reels.</span></h2>
+<div class="steps">
+<div class="step sr">
+<div class="step-num-wrap"><div class="step-num">01</div></div>
+<div class="step-content">
+<div class="step-title">Choisis ton offre partenaire</div>
+<div class="step-desc">Chaque service dispose d'un lien unique et traçable. Selectionne celui qui correspond a ta communaute — gamers, etudiants, artistes, parents, musiciens. Chaque audience est une opportunite.</div>
+<div class="step-pill">30 secondes pour commencer</div>
+</div>
+</div>
+<div class="step sr sr-d1">
+<div class="step-num-wrap"><div class="step-num">02</div></div>
+<div class="step-content">
+<div class="step-title">Partage. Partout. Tout le temps.</div>
+<div class="step-desc">Reseaux sociaux, story Instagram, newsletter, blog, WhatsApp, TikTok — chaque plateforme est un canal. L'essai gratuit se vend tout seul. Tu joues juste le role du passeur.</div>
+<div class="step-pill">Compatible tous canaux</div>
+</div>
+</div>
+<div class="step sr sr-d2">
+<div class="step-num-wrap"><div class="step-num">03</div></div>
+<div class="step-content">
+<div class="step-title">Encaisse. Automatiquement.</div>
+<div class="step-desc">Chaque inscription via ton lien declenche le versement de ta commission. Suivi en temps reel depuis ton tableau de bord. Paiements reguliers, transparents, sans friction.</div>
+<div class="step-pill">Suivi en temps reel</div>
+</div>
+</div>
+</div>
+</div>
+<!-- EARNINGS SIMULATOR -->
+<div class="earnings-sim sr sr-d2">
+<div class="sim-header">
+<div class="sim-title">SIMULATEUR DE REVENUS</div>
+<div class="sim-subtitle">Ajuste les chiffres selon ton audience</div>
+</div>
+<div class="sim-body">
+<div class="sim-row">
+<div class="sim-service">Amazon Prime</div>
+<div class="sim-controls">
+<input class="sim-input" type="number" value="5" min="0" data-rate="3" oninput="calcSim()">
+<span class="sim-unit">inscrits</span>
+</div>
+<div class="sim-earn" id="se1">15€</div>
+</div>
+<div class="sim-row">
+<div class="sim-service">Audible</div>
+<div class="sim-controls">
+<input class="sim-input" type="number" value="2" min="0" data-rate="15" oninput="calcSim()">
+<span class="sim-unit">inscrits</span>
+</div>
+<div class="sim-earn" id="se2">30€</div>
+</div>
+<div class="sim-row">
+<div class="sim-service">Prime Video</div>
+<div class="sim-controls">
+<input class="sim-input" type="number" value="3" min="0" data-rate="3" oninput="calcSim()">
+<span class="sim-unit">inscrits</span>
+</div>
+<div class="sim-earn" id="se3">9€</div>
+</div>
+<div class="sim-row">
+<div class="sim-service">Amazon Music</div>
+<div class="sim-controls">
+<input class="sim-input" type="number" value="2" min="0" data-rate="6" oninput="calcSim()">
+<span class="sim-unit">inscrits</span>
+</div>
+<div class="sim-earn" id="se4">12€</div>
+</div>
+<div class="sim-row">
+<div class="sim-service">Prime Student</div>
+<div class="sim-controls">
+<input class="sim-input" type="number" value="4" min="0" data-rate="3" oninput="calcSim()">
+<span class="sim-unit">inscrits</span>
+</div>
+<div class="sim-earn" id="se5">12€</div>
+</div>
+<div class="sim-total">
+<div class="sim-total-label">Total estimes / mois</div>
+<div class="sim-total-num" id="simTotal">78€</div>
+</div>
+<a href="#opportunities" style="display:block;margin-top:16px;text-align:center;padding:13px;background:var(--cyan);color:var(--black);font-size:.75rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:all .3s;" onmouseover="this.style.background='var(--gold)'" onmouseout="this.style.background='var(--cyan)'">Commencer a gagner maintenant</a>
+</div>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer>
+<div>
+<div class="footer-brand-name">ArtVaultStudio</div>
+<div class="footer-copy">
+Plateforme independante dediee aux createurs numeriques.
+En tant que partenaire, nous percevons une commission sur les inscriptions et achats generes via nos liens. Le prix pour l'utilisateur reste inchange.
+</div>
+</div>
+<div>
+<div class="footer-col-title">Navigation</div>
+<div class="footer-links">
+<a href="#product">La Tablette</a>
+<a href="#opportunities">Toutes les offres</a>
+<a href="#game">La Roue</a>
+<a href="#how">Comment ca marche</a>
+</div>
+</div>
+<div>
+<div class="footer-col-title">Offres disponibles</div>
+<div class="footer-links">
+<a href="#LIEN_PRIME">Amazon Prime — 3€</a>
+<a href="#LIEN_AUDIBLE">Audible — 15€</a>
+<a href="#LIEN_PRIME_VIDEO">Prime Video — 3€</a>
+<a href="#LIEN_MUSIC">Amazon Music — 6€</a>
+<a href="#LIEN_CHANNELS">Prime Channels — 3€</a>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-legal">
+Programme partenaire officiel · Commissions variables selon les conditions du programme ·
+Les essais gratuits sont soumis aux CGU du service concerne · Aucun investissement requis pour participer
+</div>
+<div style="font-family:'Bebas Neue';font-size:.9rem;color:var(--muted);letter-spacing:.1em">ARTVAULT STUDIO — 2025</div>
+</div>
+</footer>
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="stickyBar">
+<div class="sticky-bar-text"><strong>Wacom Cintiq 24 Edition 2025</strong> — Disponible via notre lien exclusif · Livraison express</div>
+<div class="sticky-bar-right">
+<a href="#LIEN_AFFILIÉ_WACOM" style="background:var(--gold);color:var(--black);padding:10px 24px;font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;" target="_blank" rel="noopener">Commander</a>
+<button class="sticky-close" onclick="document.getElementById('stickyBar').classList.remove('show')">✕</button>
+</div>
+</div>
+<script>
+// ─── CURSOR ───
+const cur = document.getElementById('cursor');
+const trail = document.getElementById('cursor-trail');
+let mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',e=>{
+mx=e.clientX;my=e.clientY;
+cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+function animateTrail(){
+tx+=(mx-tx)*.12;ty+=(my-ty)*.12;
+trail.style.left=tx+'px';trail.style.top=ty+'px';
+requestAnimationFrame(animateTrail);
+}
+animateTrail();
+// ─── 3D TILT ───
+const p3d=document.getElementById('product3d');
+if(p3d){
+const heroRight=p3d.closest('.hero-right');
+if(heroRight) heroRight.addEventListener('mousemove',e=>{
+const r=heroRight.getBoundingClientRect();
+const x=((e.clientX-r.left)/r.width-.5)*12;
+const y=((e.clientY-r.top)/r.height-.5)*-10;
+p3d.style.transform=`perspective(800px) rotateY(${x}deg) rotateX(${y}deg)`;
+});
+if(heroRight) heroRight.addEventListener('mouseleave',()=>{
+p3d.style.transform='perspective(800px) rotateY(0) rotateX(0)';
+p3d.style.transition='transform .5s ease';
+});
+}
+// ─── HERO CANVAS ───
+(function(){
+const c=document.getElementById('heroCanvas');
+if(!c)return;
+const ctx=c.getContext('2d');
+let w,h,strokes=[];
+function resize(){
+w=c.width=c.offsetWidth;
+h=c.height=c.offsetHeight;
+}
+resize();
+window.addEventListener('resize',resize);
+const colors=['#00F0FF','#BF5FFF','#FFB800','#FF2D55','#00FF94'];
+let cx2=w/2,cy2=h/2,angle=0;
+function addStroke(){
+const r=Math.min(w,h)*.35*Math.random();
+const a=Math.random()*Math.PI*2;
+const l=20+Math.random()*60;
+strokes.push({x:cx2+Math.cos(a)*r,y:cy2+Math.sin(a)*r,
+a:a+Math.PI*.5,l,color:colors[Math.floor(Math.random()*colors.length)],
+life:1,speed:.008+Math.random()*.01,w:1+Math.random()*3});
+}
+setInterval(addStroke,200);
+function draw(){
+ctx.fillStyle='rgba(8,15,28,.08)';ctx.fillRect(0,0,w,h);
+strokes=strokes.filter(s=>s.life>0);
+strokes.forEach(s=>{
+const ex=s.x+Math.cos(s.a)*s.l*s.life;
+const ey=s.y+Math.sin(s.a)*s.l*s.life;
+ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(ex,ey);
+ctx.strokeStyle=s.color;ctx.globalAlpha=s.life*.7;
+ctx.lineWidth=s.w;ctx.lineCap='round';ctx.stroke();
+ctx.globalAlpha=1;s.life-=s.speed;
+});
+// rotating ring
+angle+=.008;
+ctx.save();ctx.translate(cx2,cy2);ctx.rotate(angle);
+const grad=ctx.createConicalGradient?null:null;
+ctx.beginPath();ctx.arc(0,0,Math.min(w,h)*.38,0,Math.PI*2);
+ctx.strokeStyle='rgba(0,240,255,.06)';ctx.lineWidth=1;ctx.stroke();
+ctx.restore();
+requestAnimationFrame(draw);
+}
+draw();
+})();
+// ─── PRODUCT CANVAS ───
+(function(){
+const c=document.getElementById('productCanvas');
+if(!c)return;
+const ctx=c.getContext('2d');
+let w,h;
+function resize(){w=c.width=c.offsetWidth||400;h=c.height=c.offsetHeight||256;}
+resize();window.addEventListener('resize',resize);
+const colors2=['#00F0FF55','#BF5FFF55','#FFB80055','#FF2D5555'];
+let pts=Array.from({length:8},()=>({
+x:Math.random()*400,y:Math.random()*256,
+vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,
+r:20+Math.random()*40,c:colors2[Math.floor(Math.random()*colors2.length)]
+}));
+function drawP(){
+ctx.clearRect(0,0,w,h);
+pts.forEach(p=>{
+const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+g.addColorStop(0,p.c);g.addColorStop(1,'transparent');
+ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fillStyle=g;ctx.fill();
+p.x+=p.vx;p.y+=p.vy;
+if(p.x<0||p.x>w)p.vx*=-1;
+if(p.y<0||p.y>h)p.vy*=-1;
+});
+// grid lines
+ctx.strokeStyle='rgba(0,240,255,.04)';ctx.lineWidth=1;
+for(let i=0;i<w;i+=32){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
+for(let j=0;j<h;j+=32){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(w,j);ctx.stroke();}
+requestAnimationFrame(drawP);
+}
+drawP();
+})();
+// ─── WHEEL ───
+const wheelOffers=[
+{label:'PRIME',earn:'3€ / inscription',color:'#00F0FF',link:'#LIEN_PRIME'},
+{label:'AUDIBLE',earn:'15€ / abonnement',color:'#FFB800',link:'#LIEN_AUDIBLE'},
+{label:'PRIME VIDEO',earn:'3€ / essai',color:'#BF5FFF',link:'#LIEN_PRIME_VIDEO'},
+{label:'MUSIC',earn:'6€ / abonnement',color:'#FF2D55',link:'#LIEN_MUSIC'},
+{label:'CHANNELS',earn:'3€ / essai',color:'#00FF94',link:'#LIEN_CHANNELS'},
+{label:'STUDENT',earn:'3€ / filleul',color:'#00F0FF',link:'#LIEN_STUDENT'},
+{label:'KINDLE',earn:'KENP / pages',color:'#FFB800',link:'#LIEN_KINDLE'},
+{label:'MARIAGE',earn:'Cashback',color:'#FF2D55',link:'#LIEN_MARIAGE'},
+];
+const wc=document.getElementById('wheelCanvas');
+const wctx=wc?wc.getContext('2d'):null;
+let wheelAngle=0,spinning=false,spinsLeft=3,currentResult=null;
+const seg=Math.PI*2/wheelOffers.length;
+function drawWheel(angle){
+if(!wctx)return;
+const cx=240,cy=240,r=230;
+wctx.clearRect(0,0,480,480);
+wheelOffers.forEach((o,i)=>{
+const start=angle+i*seg,end=start+seg;
+// segment
+wctx.beginPath();wctx.moveTo(cx,cy);wctx.arc(cx,cy,r,start,end);wctx.closePath();
+const darken=i%2===0?'E6':'CC';
+wctx.fillStyle=o.color+darken;wctx.fill();
+wctx.strokeStyle='rgba(0,0,0,.2)';wctx.lineWidth=2;wctx.stroke();
+// text
+wctx.save();wctx.translate(cx,cy);wctx.rotate(start+seg/2);
+wctx.textAlign='right';wctx.textBaseline='middle';
+wctx.font='bold 11px Syne,sans-serif';
+wctx.fillStyle='rgba(0,0,0,.85)';
+wctx.fillText(o.label,r-16,0);
+wctx.font='9px Syne,sans-serif';
+wctx.fillText(o.earn,r-16,14);
+wctx.restore();
+});
+// outer ring
+wctx.beginPath();wctx.arc(cx,cy,r,0,Math.PI*2);
+wctx.strokeStyle='rgba(255,255,255,.12)';wctx.lineWidth=3;wctx.stroke();
+}
+if(wctx) drawWheel(0);
+function spinWheel(){
+if(spinning||spinsLeft<=0)return;
+spinning=true;
+document.getElementById('spinBtn').disabled=true;
+document.getElementById('resultIdle').style.display='block';
+document.getElementById('resultContent').classList.remove('show');
+const totalRot=Math.PI*2*(5+Math.random()*5);
+const duration=4000+Math.random()*1500;
+const start=performance.now();
+const startAngle=wheelAngle;
+const targetAngle=startAngle+totalRot;
+function animate(now){
+const elapsed=now-start;
+const progress=Math.min(elapsed/duration,1);
+const ease=1-Math.pow(1-progress,4);
+wheelAngle=startAngle+totalRot*ease;
+drawWheel(wheelAngle);
+if(progress<1){requestAnimationFrame(animate);}
+else{
+wheelAngle=targetAngle;
+spinning=false;
+spinsLeft--;
+document.getElementById('spinsLeft').textContent=spinsLeft;
+document.getElementById('spinBtn').disabled=spinsLeft<=0;
+// determine result
+const norm=((Math.PI*1.5-wheelAngle)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+const idx=Math.floor(norm/seg)%wheelOffers.length;
+const offer=wheelOffers[idx];
+showResult(offer);
+}
+}
+requestAnimationFrame(animate);
+}
+function showResult(o){
+document.getElementById('resultIdle').style.display='none';
+document.getElementById('resultService').textContent=o.label;
+document.getElementById('resultService').style.color=o.color;
+document.getElementById('resultEarn').innerHTML='Commission : <strong style="color:'+o.color+'">'+o.earn+'</strong>';
+const cta=document.getElementById('resultCta');
+cta.href=o.link;
+cta.style.background=o.color;
+cta.style.color=(o.color==='#FFB800'||o.color==='#00FF94')?'#060608':'#F0EEF8';
+document.getElementById('resultContent').classList.add('show');
+}
+// ─── SPEC ACCORDION ───
+function toggleSpec(el){el.classList.toggle('open');}
+// ─── EARNINGS SIMULATOR ───
+function calcSim(){
+const rows=document.querySelectorAll('.sim-input');
+let total=0;
+rows.forEach((inp,i)=>{
+const val=parseInt(inp.value)||0;
+const rate=parseFloat(inp.dataset.rate)||0;
+const earn=val*rate;
+const el=document.getElementById('se'+(i+1));
+if(el)el.textContent=earn+'€';
+total+=earn;
+});
+document.getElementById('simTotal').textContent=total+'€';
+}
+calcSim();
+// ─── COUNTER ANIMATION ───
+function animateCount(el){
+const target=parseInt(el.dataset.count);
+const suffix=el.dataset.suffix||'';
+const prefix=el.dataset.prefix||'';
+let current=0;
+const step=target/80;
+const timer=setInterval(()=>{
+current=Math.min(current+step,target);
+el.textContent=prefix+Math.floor(current).toLocaleString('fr-FR')+suffix;
+if(current>=target)clearInterval(timer);
+},16);
+}
+const countObserver=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting&&!e.target.dataset.animated){
+e.target.dataset.animated='1';
+animateCount(e.target);
+}
+});
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>countObserver.observe(el));
+// ─── SCROLL REVEAL ───
+const revealObs=new IntersectionObserver(entries=>{
+entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.1});
+document.querySelectorAll('.sr').forEach(el=>revealObs.observe(el));
+// ─── LIVE COUNTER FLUCTUATE ───
+function jitter(id,base,range){
+const el=document.getElementById(id);
+if(!el)return;
+setInterval(()=>{
+const v=base+Math.floor((Math.random()-.5)*range);
+el.textContent=v.toLocaleString('fr-FR');
+},3000);
+}
+jitter('liveCount',4217,80);
+jitter('earningNow',247,30);
+// ─── STICKY BAR ───
+let stickyShown=false;
+window.addEventListener('scroll',()=>{
+if(window.scrollY>400&&!stickyShown){
+document.getElementById('stickyBar').classList.add('show');
+stickyShown=true;
+}
+});
+// ─── NAV SHRINK ───
+window.addEventListener('scroll',()=>{
+const n=document.getElementById('mainNav');
+if(window.scrollY>60){n.style.padding='14px 64px';}
+else{n.style.padding='20px 64px';}
+});
+</script>
+</body>
+</html>
